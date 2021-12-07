@@ -13,7 +13,7 @@ bool in_range(int num, std::vector<int> &range) {
 // return where two lines intersect
 // return {-1} if they don't as null value
 // note: lines have to be parallel to the x or y-axis
-std::vector<int> find_intersection(std::vector<std::vector<int>> &line1, std::vector<std::vector<int>> &line2) {
+std::vector<int> find_intersection(std::vector<std::vector<int>> &line1, std::vector<std::vector<int>> &line2) { // TODO doesn't allow parallel lines that collide (lines that are parallel but on the same line) and only allows one point of collision (lines on same line have multiple points)
     std::vector<int> range1;
     std::vector<int> range2;
     // make sure lines aren't parallel
@@ -24,7 +24,7 @@ std::vector<int> find_intersection(std::vector<std::vector<int>> &line1, std::ve
         if (in_range(line1[0][0], range1) && in_range(line2[0][1], range2))
             return {line1[0][0], line2[0][1]};
     }
-    else if (line1[0][1] != line1[1][1] && line2[0][0] != line2[1][0]) { // -|
+    if (line1[0][1] != line1[1][1] && line2[0][0] != line2[1][0]) { // -|
         // check if segments share a range
         range1 = {line2[0][1], line2[1][1]};
         range2 = {line1[0][0], line1[0][1]};
@@ -106,6 +106,9 @@ int main() {
             }
         }
     }
-    std::cout << total_colls << std::endl;
+    // std::cout << total_colls << std::endl;
+    std::vector<std::vector<int>> new_line = {{0,1},{0,1}};
+    auto p = find_intersection(new_line, new_line);
+    std::cout << point[0] << ", " << point[1] << std::endl;
     return 0;
 }
