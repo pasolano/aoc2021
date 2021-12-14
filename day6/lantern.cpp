@@ -2,7 +2,7 @@
 #include <vector>
 #include <fstream>
 #include <string>
-#include <typeinfo>
+#include <map>
 
 void split_to_int(std::string &input, std::vector<int> &target) {
     std::string::size_type found = 0;
@@ -17,22 +17,28 @@ void split_to_int(std::string &input, std::vector<int> &target) {
 int main() {
     std::ifstream f;
     std::string line;
-    f.open("test.txt");
+    f.open("input.txt");
     std::getline(f, line);
     f.close();
+    std::map<int, long> count;
+    for (int i = 0; i < 9; i++) {
+        count[i] = 0;
+    }
+
     std::vector<int> fish;
     split_to_int(line, fish);
+    for (auto i : fish) count[i]++;
     for (int day = 0; day < 256; day++) {
-        int len = fish.size(); // get length before adding baby fish
-        for (int i = 0; i < len; i++) {
-            if (fish[i] == 0) {
-                fish[i] = 6;
-                fish.push_back(8);
-            }
-            else
-                fish[i]--;
+        long zeroes = count[0];
+        for (int i = 1; i < 9; i++) {
+            count[i-1] = count[i];
         }
+        count[6] += zeroes;
+        count[8] = zeroes;
     }
-    std::cout << fish.size() << std::endl;
+
+    long total = count[0];
+    for (int i = 1; i < 9; i++) total += count[i];
+    std::cout << total << std::endl;
     return 0;
 }
